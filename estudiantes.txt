@@ -1,0 +1,3 @@
+Ricardo Sampayo	123456	1988/05/09
+Pedro perez	987654	1960/12/03
+salir	as	das
