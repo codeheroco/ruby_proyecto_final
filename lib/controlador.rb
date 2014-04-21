@@ -5,7 +5,7 @@ class Controlador
   # Clase con la configuracion del proyecto
   # lista las acciones que vamos a tener
   class Config
-    @@actions = ['listar', 'buscar', 'agregar', 'salir']
+    @@actions = ['listar', 'buscar', 'agregar', 'eliminar', 'salir']
     def self.actions; @@actions; end
   end
   
@@ -53,6 +53,7 @@ class Controlador
       args = user_response.downcase.strip.split(' ')
       action = args.shift
     end
+
     return action, args
   end
   
@@ -67,6 +68,8 @@ class Controlador
       buscar(palabra_clave)
     when 'agregar'
       agregar
+    when 'eliminar'
+      eliminar
     when 'salir'
       return :quit
     else
@@ -83,7 +86,7 @@ class Controlador
     
     titulo("Listando usuarios")
     
-    estudiantes = Estudiante.restaurantes_guardados
+    estudiantes = Estudiante.estudiantes_guardados
     estudiantes.sort! do |r1, r2|
       case sort_order
       when 'nombre'
@@ -100,11 +103,11 @@ class Controlador
   
   # primero consulta todos los estudiantes del archivo de texto
   # luego busca que en alguno de sus atributos tenga la palabra clave 
-  # que se esta buscando.
+  # que se esta busc ando.
   def buscar(keyword="")
     titulo("Buscar usaurio")
     if keyword
-      estudiantes = Estudiante.restaurantes_guardados
+      estudiantes = Estudiante.estudiantes_guardados
       found = estudiantes.select do |estd|
         estd.nombre.downcase.include?(keyword.downcase) || 
         estd.identificador.downcase.include?(keyword.downcase) || 
@@ -127,7 +130,19 @@ class Controlador
       puts "\nError: No se agrego el usuario\n\n"
     end
   end
+
   
+  #Elimina el estudiante elegido
+  def eliminar
+    titulo("Eliminar estudiante")
+    estudiantes = Estudiante.return_estudiante
+    if estudiantes.borrar
+      puts "Estudiante eliminado correctamente :)\n\n"
+    else
+      puts "Error al borrar estudiante\n\n"
+    end
+  end
+
   # encabezado de la aplicacion
   def introduction
     puts "#" * 60
