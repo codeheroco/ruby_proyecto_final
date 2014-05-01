@@ -135,8 +135,8 @@ class Controlador
   #Elimina el estudiante elegido
   def eliminar
     titulo("Eliminar estudiante")
-    estudiantes = Estudiante.return_estudiante
-    if estudiantes.borrar
+    estudiante = Estudiante.return_estudiante
+    if estudiante.borrar
       puts "Estudiante eliminado correctamente :)\n\n"
     else
       puts "Error al borrar estudiante\n\n"
