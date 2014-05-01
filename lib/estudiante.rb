@@ -36,7 +36,7 @@ class Estudiante
   
   # recorremos el archivo plano y retornamos un arreglo con los 
   # objetos estudiantes que esten en el
-  def self.restaurantes_guardados
+  def self.estudiantes_guardados
     estudiantes = []
     if validar_archivo?
       file = File.new(@@filepath, 'r')
@@ -63,6 +63,15 @@ class Estudiante
     
     return self.new(args)
   end
+
+  # Busca un estudiante por nombre o identificador
+  def self.return_estudiante
+    estBorrar = {}
+    print "Introduce nombre del estudiante que desea eliminar: "
+    estBorrar[:nombre] = gets.chomp.strip
+
+    return self.new(estBorrar)     
+  end
   
   # constructor de la aplicación, recibe los datos introducidos 
   # desde la aplicacion
@@ -72,7 +81,7 @@ class Estudiante
     @fecha_nacimiento = args[:fecha_nacimiento]   || ""
   end
   
-  #convierte luna linea del archivo plano a los
+  #convierte una linea del archivo plano a los
   # atrubutos del estudiante nombre, identificador y fecha
   def importar_linea(line)
     line_array = line.split("\t")
@@ -88,7 +97,33 @@ class Estudiante
     end
     return true
   end
-  
+
+  # En esta primera version será un método bastante rudimentario en el que 
+  # simplemente leeremos el archivo y volveremos a reescribirlo sin insertar 
+  # aquel estudiante que coincida con el que queremos borrar
+  def borrar
+    return false unless Estudiante.validar_archivo?
+
+    estudiantes = Estudiante.estudiantes_guardados
+
+    v_ok = false
+    File.open(@@filepath, "w")
+    estudiantes.select do |estd|
+      unless estd.nombre.downcase.include?(@nombre.downcase)
+        args = {}
+        args[:nombre] = estd.nombre
+        args[:identificador] = estd.identificador
+        args[:fecha_nacimiento] = estd.fecha_nacimiento
+        estGuardar = Estudiante.new(args)
+
+        if estGuardar.guardar 
+          v_ok = true
+        else
+          v_ok = false
+        end
+      end 
+    end
+    return v_ok
+  end
+
 end
-
-
