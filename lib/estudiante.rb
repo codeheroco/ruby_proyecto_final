@@ -107,7 +107,7 @@ class Estudiante
     estudiantes = Estudiante.estudiantes_guardados
 
     v_ok = false
-    file = File.open(@@filepath, "w")
+    File.open(@@filepath, "w")
     estudiantes.select do |estd|
       unless estd.nombre.downcase.include?(@nombre.downcase)
         args = {}
@@ -127,5 +127,3 @@ class Estudiante
   end
 
 end
-
-
